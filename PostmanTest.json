@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "790000c2-a600-49fe-be1b-f572d5b6d2b9",
+		"name": "nginx forward auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "регистрация",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1c1429f6-c41c-4a3c-ac23-1b86ccea4e78",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7d314fa6-3a22-4895-85ca-6e174afa06be",
+						"exec": [
+							"pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'))",
+							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))",
+							"pm.collectionVariables.set(\"login\", pm.variables.replaceIn('{{$randomUserName}}'))",
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))",
+							"pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"login\": \"{{login}}\",\n\t\"password\": \"{{password}}\",\n\t\"email\": \"{{email}}\",\n\t\"first_name\": \"{{firstName}}\",\n\t\"last_name\": \"{{lastName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "проверка, что изменение и получение профиля пользователя недоступно без логина",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/me",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "логин",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eb5e1566-ab18-4f4d-8f2b-0397b755ca3d",
+						"exec": [
+							"var responseJSON = JSON.parse(responseBody)",
+							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"IDtoken\"])"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"login\": \"{{login}}\", \"password\": \"{{password}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "получить данные о пользователе Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/auth",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "получить данные о пользователе",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/me",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "изменить данные о пользователе",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"first_name\": \"Sergey\",\r\n\t\"last_name\": \"Krivonos\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/change",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"change"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "получить данные о пользователе после изменения",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/me",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "логаут",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/logout",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "получить данные после разлогина",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/users/me",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c87dc956-0306-49a3-9b04-7f056459f68c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "402a86b1-9762-44a1-9be4-f188a88719af",
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"[INFO] Request: \" + (('data' in request) ? request['data'] : '') ] = true;",
+					"tests[\"[INFO] Response: \" + responseBody] = true;"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b81a79cd-7833-4333-8693-383dfaf78d91",
+			"key": "IDtoken",
+			"value": ""
+		},
+		{
+			"id": "f4d2e48f-3ca0-4c93-b19c-7edc3379e622",
+			"key": "password",
+			"value": ""
+		},
+		{
+			"id": "d1598bd8-08d5-4216-b7b2-40c45fc36fc5",
+			"key": "email",
+			"value": ""
+		},
+		{
+			"id": "786b34f5-3f7e-402f-9546-ac3d9875a5bd",
+			"key": "login",
+			"value": ""
+		},
+		{
+			"id": "48f421fe-c846-419d-91de-25e75712382d",
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"id": "747179c1-4617-478d-aed9-f54ba8013427",
+			"key": "lastName",
+			"value": ""
+		},
+		{
+			"id": "54fd829e-8fe0-474d-b7f1-d0dbd4f977e2",
+			"key": "baseUrl",
+			"value": "http://arch.homework"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

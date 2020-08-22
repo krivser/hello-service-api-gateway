@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: auth-service
+    context: .
+deploy:
+  helm:
+    releases:
+    - name: auth-service
+      chartPath: auth-service-chart
+      skipBuildDependencies: true
+      values:
+        image: auth-service

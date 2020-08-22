@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: hello-service
+    context: .
+deploy:
+  helm:
+    releases:
+    - name: hello-service
+      chartPath: hello-service-chart
+      skipBuildDependencies: true
+      values:
+        image: hello-service

@@ -1,0 +1,13 @@
+{
+  "name": "server-nodejs",
+  "version": "1.0.0",
+  "description": "node.js on docker",
+  "author": "sergey krivonos <svkrivnos@example.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
