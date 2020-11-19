@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "790000c2-a600-49fe-be1b-f572d5b6d2b9",
-		"name": "nginx forward auth",
+		"_postman_id": "ea76640d-5073-46de-830f-adb8c61120f2",
+		"name": "Idempotency",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1c1429f6-c41c-4a3c-ac23-1b86ccea4e78",
+						"id": "fd70de9a-33b3-47cf-b90f-1938e1f50099",
 						"exec": [
 							""
 						],
@@ -21,7 +21,59 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "7d314fa6-3a22-4895-85ca-6e174afa06be",
+						"id": "210f6bd3-af88-4899-873b-7ab76b6ab46d",
+						"exec": [
+							"pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'))",
+							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))",
+							"pm.collectionVariables.set(\"login\", pm.variables.replaceIn('{{$randomUserName}}'))",
+							"pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'))",
+							"pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"login\": \"{{login}}\",\n\t\"password\": \"{{password}}\",\n\t\"email\": \"{{email}}\",\n\t\"first_name\": \"{{firstName}}\",\n\t\"last_name\": \"{{lastName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "регистрация с проверкой идемпотентности",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "91b44b7c-94a3-4e61-a664-274dc8640b8d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "441bf9ef-f83a-4754-bc52-acc41ab0a849",
 						"exec": [
 							"pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'))",
 							"pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'))",
@@ -81,7 +133,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "eb5e1566-ab18-4f4d-8f2b-0397b755ca3d",
+						"id": "b6fe95b1-3545-43aa-80f6-835cdfba276a",
 						"exec": [
 							"var responseJSON = JSON.parse(responseBody)",
 							"pm.collectionVariables.set(\"IDtoken\", responseJSON[\"IDtoken\"])"
@@ -233,7 +285,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "c87dc956-0306-49a3-9b04-7f056459f68c",
+				"id": "abbcee20-fb49-4bbb-b14b-83494ea01441",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -243,7 +295,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "402a86b1-9762-44a1-9be4-f188a88719af",
+				"id": "0c4717d8-34cd-4d38-be43-e9ea727af981",
 				"type": "text/javascript",
 				"exec": [
 					"tests[\"[INFO] Request: \" + (('data' in request) ? request['data'] : '') ] = true;",
