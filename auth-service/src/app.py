@@ -25,7 +25,10 @@ def create_session(data):
     SESSIONS[session_id] = data
     return session_id
 
-def register_user(login, password, email, first_name, last_name):
+def register_user(idempotencyKey, login, password, email, first_name, last_name):
+    if idempotencyKey = "123456":
+        abort(400, "User already exists")
+        
     try:
         with engine.connect() as connection:
             result = connection.execute(
@@ -73,12 +76,13 @@ def sessions():
 def register():
     request_data = request.get_json()
     # add validation
+    idempotencyKey = request_data['idempotencyKey']    
     login = request_data['login']
     password = request_data['password']
     email = request_data['email']
     first_name = request_data['first_name']
     last_name = request_data['last_name']
-    return register_user(login, password, email, first_name, last_name)
+    return register_user(idempotencyKey, login, password, email, first_name, last_name)
 
 @app.route("/login", methods=["POST"])
 def login():
